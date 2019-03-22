@@ -1,4 +1,4 @@
-# CSYE6225-Spring2019
+# CSYE6225-Spring2019-Lambda
 
 ## Team Information
 
