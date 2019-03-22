@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+}
+
+group 'csye6225-spring2019-lamdba'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile (
+            'com.amazonaws:aws-lambda-java-core:1.1.0',
+            'com.amazonaws:aws-lambda-java-events:1.1.0'
+    )
+    // https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-ses
+    compile (group: 'com.amazonaws', name: 'aws-java-sdk-ses', version: '1.11.522')
+
+}
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.compileClasspath
+    }
+}
+
+build.dependsOn buildZip
