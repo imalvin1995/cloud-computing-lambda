@@ -1,0 +1,25 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    branches:
+      only:
+       - Assignment7
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install wget zip unzip python2.7 python-pip -y
+
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+
+      - run:
+          name: Package Lambda Function
+          command: gradle build
+
+      - run:
+          name: Upload zip File to Lambda
+          command: aws lambda update-function-code --function-name ${FunctionName} --zip-file fileb://lamdba/build/distributions/csye6225-1.0-SNAPSHOT.zip
