@@ -69,14 +69,6 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
         }else return null;
 
         if((tableInstance.getItem("id", app_username)) == null){
-            context.getLogger().log("User's reset password request doesn't exist in the DynamoDb, " +
-                    " create new token and send an email to user");
-            Number TTL = System.currentTimeMillis() /1000L + 1200;
-            context.getLogger().log("token valid time: " + TTL);
-            this.dynamoDB.getTable(DBTableName).putItem(
-                    new PutItemSpec().withItem( new Item().withString("id",app_username)
-                    .withString("token",token)
-                    .withNumber("TTL",TTL)));
             TEXTBODY = "https://" + SES_FROM_ADDRESS+ "/reset?email=" + app_username + "&token= " + token;
             HTMLBODY = "<h3>You have successfully requested an Password Reset using Amazon SES!</h3>"
                     + "<p>Please reset the password using the below link in 20 minutes.<br/> " +
@@ -85,7 +77,6 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
             context.getLogger().log("Textbody : "+ TEXTBODY);
             context.getLogger().log("Htmlbody : "+ HTMLBODY);
             context.getLogger().log("--------------Task2 complete--------------");
-
             try{
                 AmazonSimpleEmailService amazonSimpleEmailService = AmazonSimpleEmailServiceClientBuilder.standard()
                         .withRegion(REGION).build();
@@ -93,13 +84,13 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
 
                 SendEmailRequest emailRequest = new SendEmailRequest().withDestination(new Destination().withToAddresses(app_username))
                         .withMessage( new Message()
-                            .withBody( new Body()
-                                .withHtml(new Content()
-                                            .withCharset("UTF-8").withData(HTMLBODY))
-                                .withText(new Content()
-                                            .withCharset("UTF-8").withData(TEXTBODY)))
-                            .withSubject(new Content()
-                                .withCharset("UTF-8").withData(EMAIL_SUBJECT)))
+                                .withBody( new Body()
+                                        .withHtml(new Content()
+                                                .withCharset("UTF-8").withData(HTMLBODY))
+                                        .withText(new Content()
+                                                .withCharset("UTF-8").withData(TEXTBODY)))
+                                .withSubject(new Content()
+                                        .withCharset("UTF-8").withData(EMAIL_SUBJECT)))
                         .withSource(SES_FROM_ADDRESS);
                 amazonSimpleEmailService.sendEmail( emailRequest);
                 context.getLogger().log("--------------Task 4 send email complete--------------");
@@ -107,7 +98,19 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
             } catch(Exception ex){
                 System.out.println("The email wasn't send, Error message: " + ex.getMessage());
                 context.getLogger().log("Task 5");
+                return null;
             }
+            
+            context.getLogger().log("User's reset password request doesn't exist in the DynamoDb, " +
+                    " create new token and send an email to user");
+            Number TTL = System.currentTimeMillis() /1000L + 1200;
+            context.getLogger().log("token valid time: " + TTL);
+            this.dynamoDB.getTable(DBTableName).putItem(
+                    new PutItemSpec().withItem( new Item().withString("id",app_username)
+                    .withString("token",token)
+                    .withNumber("TTL",TTL)));
+
+
         }else{
             context.getLogger().log("User's request already exist in dynamoDB");
         }
