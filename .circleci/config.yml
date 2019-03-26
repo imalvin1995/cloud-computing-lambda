@@ -21,7 +21,7 @@ jobs:
           command: |
             pwd
             ls
-            cat project
+            cd lamdba
             gradle build
 
       - run:
