@@ -18,7 +18,9 @@ jobs:
 
       - run:
           name: Package Lambda Function
-          command: gradle build
+          command: |
+            cd lambda
+            gradle build
 
       - run:
           name: Upload zip File to Lambda
