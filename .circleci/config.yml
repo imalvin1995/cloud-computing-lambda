@@ -20,8 +20,8 @@ jobs:
           name: Package Lambda Function
           command: |
             pwd
-            cd lambda
-            pwd
+            cd project
+            ls
             gradle build
 
       - run:
