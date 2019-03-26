@@ -27,4 +27,6 @@ jobs:
           command: |
             pwd
             ls
+            cd lamdba
+            ls
             aws lambda update-function-code --function-name csye6225-lambda-function --zip-file fileb://csye6225-1.0-SNAPSHOT.zip
