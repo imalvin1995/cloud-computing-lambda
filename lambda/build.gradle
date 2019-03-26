@@ -2,7 +2,7 @@ plugins {
     id 'java'
 }
 
-group 'csye6225-spring2019-lamdba'
+group 'csye6225-spring2019-lambda'
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
