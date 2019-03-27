@@ -25,6 +25,6 @@ jobs:
       - run:
           name: Upload zip File to Lambda
           command: |
-            aws lambda update-function-configuration --function-name "csye6225-spring2019-lambda" --runtime "java8" --handler "LogEvent::handleRequest"
+            aws lambda update-function-configuration --function-name "csye6225-lambda-function" --runtime "java8" --handler "LogEvent::handleRequest"
             cd lambda/build/distributions/
             aws lambda update-function-code --function-name csye6225-lambda-function --zip-file fileb://csye6225-1.0-SNAPSHOT.zip
