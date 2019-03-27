@@ -100,7 +100,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
                 context.getLogger().log("Task 5");
                 return null;
             }
-            
+
             context.getLogger().log("User's reset password request doesn't exist in the DynamoDb, " +
                     " create new token and send an email to user");
             Number TTL = System.currentTimeMillis() /1000L + 1200;
