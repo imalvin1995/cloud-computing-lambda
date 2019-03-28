@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:8-jdk
+    branches:
+      only:
+       - Assignment7
+    steps:
+      - checkout
+      - run:
+          name: Install packages
+          command: sudo apt-get update && sudo apt-get install wget zip unzip python2.7 python-pip -y
+
+      - run:
+          name: Install awscli
+          command: sudo pip install awscli
+
+      - run:
+          name: Package Lambda Function
+          command: |
+            cd lambda
+            gradle build
+
+      - run:
+          name: Upload zip File to Lambda
+          command: |
+            aws lambda update-function-configuration --function-name "csye6225-lambda-function" --runtime "java8" --handler "LogEvent::handleRequest"
+            cd lambda/build/distributions/
+            aws lambda update-function-code --function-name csye6225-lambda-function --zip-file fileb://csye6225-1.0-SNAPSHOT.zip
