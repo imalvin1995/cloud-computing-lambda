@@ -67,12 +67,12 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
         if( tableInstance  != null){
             context.getLogger().log("Get Table from DynamoDB: " + DBTableName);
         }else return null;
-
+        String domain = SES_FROM_ADDRESS.substring(SES_FROM_ADDRESS.indexOf("@")+1);
         if((tableInstance.getItem("id", app_username)) == null){
-            TEXTBODY = "https://" + SES_FROM_ADDRESS+ "/reset?email=" + app_username + "&token= " + token;
+            TEXTBODY = "https://" + domain+ "/reset?email=" + app_username + "&token= " + token;
             HTMLBODY = "<h3>You have successfully requested an Password Reset using Amazon SES!</h3>"
                     + "<p>Please reset the password using the below link in 20 minutes.<br/> " +
-                    "Link:https://"+ SES_FROM_ADDRESS+"/reset?email=" + app_username + "&token= " + token+"</p>";
+                    "Link:https://"+ domain+"/reset?email=" + app_username + "&token= " + token+"</p>";
 
             context.getLogger().log("Textbody : "+ TEXTBODY);
             context.getLogger().log("Htmlbody : "+ HTMLBODY);
