@@ -108,7 +108,7 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
             this.dynamoDB.getTable(DBTableName).putItem(
                     new PutItemSpec().withItem( new Item().withString("id",app_username)
                     .withString("token",token)
-                    .withNumber("TTL",TTL)));
+                    ));
 
 
         }else{
