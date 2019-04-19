@@ -105,10 +105,10 @@ public class LogEvent implements RequestHandler<SNSEvent, Object> {
                     " create new token and send an email to user");
             Number TTL = System.currentTimeMillis() /1000L + 1200;
             context.getLogger().log("token valid time: " + TTL);
-//            this.dynamoDB.getTable(DBTableName).putItem(
-//                    new PutItemSpec().withItem( new Item().withString("id",app_username)
-//                    .withString("token",token)
-//                    .withNumber("TTL",TTL)));
+            this.dynamoDB.getTable(DBTableName).putItem(
+                    new PutItemSpec().withItem( new Item().withString("id",app_username)
+                    .withString("token",token)
+                    .withNumber("TTL",TTL)));
 
 
         }else{
